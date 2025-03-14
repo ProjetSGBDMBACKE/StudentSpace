@@ -1,0 +1,50 @@
+{
+  "exercises": [
+    {
+      "id": 1,
+      "title": "Exercice 1 : Requêtes SQL de base",
+      "description": "Écrivez une requête SQL pour sélectionner tous les utilisateurs.",
+      "createdAt": "2023-10-01",
+      "file": "exercice1.pdf",
+      "correctionModels": [
+        {
+          "id": 1,
+          "model": "SELECT * FROM users;"
+        },
+        {
+          "id": 2,
+          "model": "SELECT id, name FROM users;"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Exercice 2 : Jointures SQL",
+      "description": "Écrivez une requête SQL pour joindre deux tables.",
+      "createdAt": "2023-10-02",
+      "file": "exercice2.pdf",
+      "correctionModels": [
+        {
+          "id": 3,
+          "model": "SELECT * FROM users JOIN orders ON users.id = orders.user_id;"
+        }
+      ]
+    }
+  ],
+  "corrections": [
+    {
+      "id": 1,
+      "exerciseId": 1,
+      "studentName": "Alice",
+      "score": 15,
+      "feedback": "Bonne requête, mais manque de précision."
+    },
+    {
+      "id": 2,
+      "exerciseId": 2,
+      "studentName": "Bob",
+      "score": 18,
+      "feedback": "Très bien, mais attention aux doublons."
+    }
+  ]
+}
