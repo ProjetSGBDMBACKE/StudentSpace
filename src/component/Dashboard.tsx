@@ -1,48 +1,46 @@
 import { Card, CardContent, Typography, Grid } from "@mui/material";
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
+  AreaChart,
+  Area,
+  CartesianGrid,
 } from "recharts";
 import { Datagrid, List, TextField, NumberField } from "react-admin";
 
-// Données simulées
-const submissionsData = [
-  { name: "Jan", submissions: 30 },
-  { name: "Fév", submissions: 45 },
-  { name: "Mar", submissions: 20 },
+// Données simulées pour l'évolution des performances
+const performanceData = [
+  { name: "Jan", studentScore: 65, classAverage: 70 },
+  { name: "Fév", studentScore: 75, classAverage: 72 },
+  { name: "Mar", studentScore: 80, classAverage: 75 },
+  { name: "Avr", studentScore: 85, classAverage: 78 },
+  { name: "Mai", studentScore: 90, classAverage: 80 },
 ];
 
-const successData = [
-  { name: "Réussi", value: 70 },
-  { name: "Échec", value: 30 },
+// Données simulées pour les performances par exercice
+const exercisePerformanceData = [
+  { name: "Exercice 1", studentScore: 70, classAverage: 75 },
+  { name: "Exercice 2", studentScore: 80, classAverage: 78 },
+  { name: "Exercice 3", studentScore: 85, classAverage: 82 },
+  { name: "Exercice 4", studentScore: 90, classAverage: 85 },
 ];
 
-const misunderstoodData = [
-  { name: "Chapitre 1", questions: 5 },
-  { name: "Chapitre 2", questions: 12 },
-  { name: "Chapitre 3", questions: 8 },
+// Données simulées pour la progression des performances
+const progressionData = [
+  { name: "Semaine 1", score: 60 },
+  { name: "Semaine 2", score: 65 },
+  { name: "Semaine 3", score: 70 },
+  { name: "Semaine 4", score: 75 },
+  { name: "Semaine 5", score: 80 },
 ];
 
-// Données simulées pour les étudiants
-// const studentsData = [
-//   { id: 1, name: "Alice", score: 85, submissions: 10 },
-//   { id: 2, name: "Bob", score: 72, submissions: 8 },
-//   { id: 3, name: "Charlie", score: 90, submissions: 12 },
-//   { id: 4, name: "David", score: 68, submissions: 7 },
-// ];
-
-// Couleurs pour le PieChart
-const COLORS = ["#4CAF50", "#FF5722"];
-
+// Composant réutilisable pour les cartes
 const Item = ({
   title,
   children,
@@ -62,70 +60,73 @@ const Item = ({
 
 export const Dashboard = () => (
   <Grid container spacing={4} sx={{ p: 3 }}>
-    {/* Nombre de soumissions */}
-    <Grid item xs={12} md={4}>
-      <Item title="Nombre de soumissions">
-        <ResponsiveContainer width="100%" height={120}>
-          <BarChart data={submissionsData}>
+    {/* Évolution des performances (LineChart) */}
+    <Grid item xs={12} md={6}>
+      <Item title="Évolution des performances">
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={performanceData}>
+            <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
-            <Bar dataKey="submissions" fill="#1976D2" />
-          </BarChart>
-        </ResponsiveContainer>
-      </Item>
-    </Grid>
-
-    {/* Taux de réussite */}
-    <Grid item xs={12} md={3}>
-      <Item title="Taux de réussite">
-        <ResponsiveContainer width="100%" height={120}>
-          <PieChart>
-            <Pie data={successData} dataKey="value" outerRadius={40} label>
-              {successData.map((_entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-      </Item>
-    </Grid>
-
-    {/* Questions mal comprises */}
-    <Grid item xs={12} md={4}>
-      <Item title="Questions mal comprises">
-        <ResponsiveContainer width="100%" height={120}>
-          <LineChart data={misunderstoodData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="questions" stroke="#E91E63" />
+            <Line
+              type="monotone"
+              dataKey="studentScore"
+              stroke="#1976D2"
+              name="Votre score"
+            />
+            <Line
+              type="monotone"
+              dataKey="classAverage"
+              stroke="#4CAF50"
+              name="Moyenne de la classe"
+            />
           </LineChart>
         </ResponsiveContainer>
       </Item>
     </Grid>
 
-    {/* Liste des étudiants */}
-    <Grid item xs={12}>
-      <Item title="Performances des étudiants">
-        <List
-          perPage={10}
-          pagination={false}
-          //@ts-ignore
-          hasCreate={false}
-          resource="students"
-          basePath="/students"
-          exporter={false}
-          actions={false}
-        >
-          <Datagrid>
-            <TextField source="name" label="Nom" />
-            <NumberField source="score" label="Score" />
-            <NumberField source="submissions" label="Soumissions" />
-          </Datagrid>
-        </List>
+    {/* Performances par exercice (BarChart) */}
+    <Grid item xs={12} md={6}>
+      <Item title="Performances par exercice">
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart data={exercisePerformanceData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Bar dataKey="studentScore" fill="#1976D2" name="Votre score" />
+            <Bar
+              dataKey="classAverage"
+              fill="#4CAF50"
+              name="Moyenne de la classe"
+            />
+          </BarChart>
+        </ResponsiveContainer>
       </Item>
     </Grid>
+
+    {/* Progression des performances (AreaChart) */}
+    <Grid item xs={12}>
+      <Item title="Progression des performances">
+        <ResponsiveContainer width="100%" height={300}>
+          <AreaChart data={progressionData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Area
+              type="monotone"
+              dataKey="score"
+              stroke="#1976D2"
+              fill="#1976D2"
+              fillOpacity={0.3}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </Item>
+    </Grid>
+
+    {/* Liste des performances des étudiants */}
   </Grid>
 );

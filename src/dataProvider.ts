@@ -6,7 +6,7 @@ import { stringify } from "query-string";
 const apiUrl = "/data.json"; // Remplacez par l'URL de votre API
 const httpClient = fetchUtils.fetchJson;
 
-// Données simulées pour les étudiants
+// Données simulées pour les étudiants (optionnel, si vous utilisez encore cette ressource)
 const studentsData = [
   { id: 1, name: "Alice", score: 85, submissions: 10 },
   { id: 2, name: "Bob", score: 72, submissions: 8 },
@@ -18,26 +18,24 @@ const studentsData = [
 const generateId = () => Math.floor(Math.random() * 1000000);
 
 const dataProvider: DataProvider = {
-  // Récupérer une liste de ressources (ex: /exercises ou /students)
   getList: async (resource, params) => {
-    if (resource === "students") {
-      // Retourne les données des étudiants
-      return {
-        data: studentsData,
-        total: studentsData.length,
-      };
-    }
-
-    // Pour les autres ressources, utilisez l'API ou le fichier JSON
     const { json } = await httpClient(apiUrl);
     if (!json[resource]) {
       throw new Error(`Resource ${resource} not found`);
     }
 
+    // Filtrage par étudiant connecté (si la ressource est "corrections")
+    let data = json[resource];
+    if (resource === "corrections" && params.filter?.studentId) {
+      data = data.filter(
+        (correction: any) => correction.studentId === params.filter.studentId,
+      );
+    }
+
     // Filtrage et pagination (optionnel)
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
-    const filteredData = json[resource]
+    const filteredData = data
       .sort((a: any, b: any) =>
         a[field] > b[field]
           ? order === "ASC"
@@ -54,11 +52,11 @@ const dataProvider: DataProvider = {
         ...resource,
         id: resource.id,
       })),
-      total: json[resource].length,
+      total: data.length,
     };
   },
 
-  // Récupérer une ressource par son ID (ex: /exercises/1 ou /students/1)
+  // Récupérer une ressource par son ID (ex: /exercises/1 ou /submissions/1)
   getOne: async (resource, params) => {
     if (resource === "students") {
       const record = studentsData.find((student) => student.id === params.id);
@@ -77,7 +75,7 @@ const dataProvider: DataProvider = {
     return { data: record };
   },
 
-  // Récupérer plusieurs ressources par leurs IDs (ex: /exercises?ids=[1,2] ou /students?ids=[1,2])
+  // Récupérer plusieurs ressources par leurs IDs (ex: /exercises?ids=[1,2] ou /submissions?ids=[1,2])
   getMany: async (resource, params) => {
     if (resource === "students") {
       const records = studentsData.filter((student) =>
@@ -100,7 +98,7 @@ const dataProvider: DataProvider = {
     return { data: records };
   },
 
-  // Récupérer des ressources liées (ex: /corrections?exerciseId=1)
+  // Récupérer des ressources liées (ex: /submissions?exerciseId=1)
   getManyReference: async (resource, params) => {
     if (resource === "students") {
       const { target, id } = params;
@@ -121,7 +119,7 @@ const dataProvider: DataProvider = {
     };
   },
 
-  // Créer une nouvelle ressource (ex: POST /exercises ou POST /students)
+  // Créer une nouvelle ressource (ex: POST /exercises ou POST /submissions)
   create: async (resource, params) => {
     if (resource === "students") {
       const newRecord = { ...params.data, id: generateId() };
@@ -136,7 +134,7 @@ const dataProvider: DataProvider = {
     return { data: newRecord };
   },
 
-  // Mettre à jour une ressource existante (ex: PUT /exercises/1 ou PUT /students/1)
+  // Mettre à jour une ressource existante (ex: PUT /exercises/1 ou PUT /submissions/1)
   update: async (resource, params) => {
     if (resource === "students") {
       const index = studentsData.findIndex(
@@ -159,7 +157,7 @@ const dataProvider: DataProvider = {
     return { data: json[resource][index] };
   },
 
-  // Mettre à jour plusieurs ressources (ex: PUT /exercises?ids=[1,2] ou PUT /students?ids=[1,2])
+  // Mettre à jour plusieurs ressources (ex: PUT /exercises?ids=[1,2] ou PUT /submissions?ids=[1,2])
   updateMany: async (resource, params) => {
     if (resource === "students") {
       params.ids.forEach((id) => {
@@ -182,7 +180,7 @@ const dataProvider: DataProvider = {
     return { data: params.ids };
   },
 
-  // Supprimer une ressource (ex: DELETE /exercises/1 ou DELETE /students/1)
+  // Supprimer une ressource (ex: DELETE /exercises/1 ou DELETE /submissions/1)
   delete: async (resource, params) => {
     if (resource === "students") {
       const index = studentsData.findIndex(
@@ -205,7 +203,7 @@ const dataProvider: DataProvider = {
     return { data: deletedRecord };
   },
 
-  // Supprimer plusieurs ressources (ex: DELETE /exercises?ids=[1,2] ou DELETE /students?ids=[1,2])
+  // Supprimer plusieurs ressources (ex: DELETE /exercises?ids=[1,2] ou DELETE /submissions?ids=[1,2])
   deleteMany: async (resource, params) => {
     if (resource === "students") {
       params.ids.forEach((id) => {

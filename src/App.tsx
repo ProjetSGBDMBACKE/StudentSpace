@@ -7,12 +7,15 @@ import { Dashboard } from "./component/Dashboard";
 import { authProvider } from "./authProvider";
 
 import dataProvider from "./dataProvider";
-import { CorrectionCreate } from "./component/Correction/CorrectionCreate";
-import { CorrectionEdit } from "./component/Correction/CorrectionEdit";
+
+import { ExerciseList } from "./component/SujetDeposer/ExerciseList";
+import { ExerciseShow } from "./component/SujetDeposer/ExerciseShow";
+import { SubmissionList } from "./component/Submit/SubmissionList";
 import { CorrectionList } from "./component/Correction/CorrectionList";
-import { ExerciseCreate } from "./component/SujetExamen/ExerciseCreate";
-import { ExerciseEdit } from "./component/SujetExamen/ExerciseEdit";
-import { ExerciseList } from "./component/SujetExamen/ExerciseList";
+import { CorrectionShow } from "./component/Correction/CorrectionShow";
+import Assignment from "@mui/icons-material/Assignment";
+import Grading from "@mui/icons-material/Grading";
+import Upload from "@mui/icons-material/Upload";
 
 const theme: ThemeOptions = {
   palette: {
@@ -230,17 +233,19 @@ export const App = () => {
       <Resource
         name="exercises"
         list={ExerciseList}
-        create={ExerciseCreate}
-        edit={ExerciseEdit}
-        icon={FitnessCenterIcon}
+        show={ExerciseShow}
+        icon={Assignment}
+        options={{ label: "Sujet " }}
       />
+
       <Resource
         name="corrections"
         list={CorrectionList}
-        create={CorrectionCreate}
-        edit={CorrectionEdit}
-        icon={GradingIcon}
+        show={CorrectionShow}
+        icon={Grading}
+        options={{ label: "Corrections" }}
       />
+      <Resource name="Soumission" list={SubmissionList} icon={Upload} />
     </Admin>
   );
 };

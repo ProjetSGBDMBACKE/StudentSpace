@@ -3,48 +3,70 @@
     {
       "id": 1,
       "title": "Exercice 1 : Requêtes SQL de base",
-      "description": "Écrivez une requête SQL pour sélectionner tous les utilisateurs.",
+      "professor": "Prof. Dupont",
       "createdAt": "2023-10-01",
-      "file": "exercice1.pdf",
-      "correctionModels": [
-        {
-          "id": 1,
-          "model": "SELECT * FROM users;"
-        },
-        {
-          "id": 2,
-          "model": "SELECT id, name FROM users;"
-        }
-      ]
+      "deadline": "2023-10-15",
+      "difficulty": "facile",
+      "description": "Écrivez une requête SQL pour sélectionner tous les utilisateurs.",
+      "content": "Sujet : Sélectionnez tous les utilisateurs de la table 'users'."
     },
     {
       "id": 2,
       "title": "Exercice 2 : Jointures SQL",
-      "description": "Écrivez une requête SQL pour joindre deux tables.",
+      "professor": "Prof. Martin",
       "createdAt": "2023-10-02",
-      "file": "exercice2.pdf",
-      "correctionModels": [
-        {
-          "id": 3,
-          "model": "SELECT * FROM users JOIN orders ON users.id = orders.user_id;"
-        }
-      ]
+      "deadline": "2023-10-16",
+      "difficulty": "moyen",
+      "description": "Écrivez une requête SQL pour joindre deux tables.",
+      "content": "Sujet : Joignez les tables 'users' et 'orders' sur l'ID utilisateur."
+    }
+  ],
+  "submissions": [
+    {
+      "id": 1,
+      "exerciseId": 1,
+      "studentId": 101,
+      "studentName": "Alice",
+      "score": 15,
+      "feedback": "Bonne requête, mais manque de précision.",
+      "submissionDate": "2023-10-10",
+      "file": "alice_exercice1.pdf"
+    },
+    {
+      "id": 2,
+      "exerciseId": 2,
+      "studentId": 102,
+      "studentName": "Bob",
+      "score": 18,
+      "feedback": "Très bien, mais attention aux doublons.",
+      "submissionDate": "2023-10-12",
+      "file": "bob_exercice2.pdf"
     }
   ],
   "corrections": [
     {
       "id": 1,
       "exerciseId": 1,
+      "exerciseTitle": "Exercice 1 : Requêtes SQL de base",
+      "professorName": "Prof. Dupont",
+      "studentId": 101,
       "studentName": "Alice",
       "score": 15,
-      "feedback": "Bonne requête, mais manque de précision."
+      "feedback": "Bonne requête, mais manque de précision.",
+      "submissionDate": "2023-10-10",
+      "file": "alice_exercice1.pdf"
     },
     {
       "id": 2,
       "exerciseId": 2,
+      "exerciseTitle": "Exercice 2 : Jointures SQL",
+      "professorName": "Prof. Martin",
+      "studentId": 102,
       "studentName": "Bob",
       "score": 18,
-      "feedback": "Très bien, mais attention aux doublons."
+      "feedback": "Très bien, mais attention aux doublons.",
+      "submissionDate": "2023-10-12",
+      "file": "bob_exercice2.pdf"
     }
   ]
 }
